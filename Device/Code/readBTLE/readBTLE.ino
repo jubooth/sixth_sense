@@ -16,6 +16,7 @@
 #define RDY 2     // RDY pin on the Arduino board
 #define RST 9     // RST pin on the Arduino board
 #define REQ 10    // REQ pin on the Arduino board
+#define TOPLEFT 48  // digital pin driving top left
 
 Adafruit_BLE_UART uart = Adafruit_BLE_UART(REQ, RDY, RST);    // initialise the uart to be polled
 
@@ -44,6 +45,9 @@ void rxCallback(uint8_t *buffer, uint8_t len){
     switch((char)buffer[0]){
       case '1':
         Serial.print("top left\n");
+        digitalWrite(TOPLEFT, HIGH);
+        delay(5000);
+        digitalWrite(TOPLEFT, LOW);
         break;
       case '2':
         Serial.print("top centre 1\n");
@@ -106,6 +110,8 @@ void rxCallback(uint8_t *buffer, uint8_t len){
 
 // sets up the connection
 void setup(void){ 
+  pinMode(TOPLEFT, OUTPUT);
+  
   Serial.begin(9600);
   while(!Serial);
   Serial.println(F("Adafruit Bluefruit Low Energy nRF8001 Callback Echo demo"));
