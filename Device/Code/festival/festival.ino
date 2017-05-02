@@ -175,6 +175,138 @@ void sweepUp(){
   digitalWrite(TOPRIGHT, LOW);
 }
 
+void sweepBottomRight(){
+  digitalWrite(TOPLEFT, HIGH);
+  delay(500);
+  digitalWrite(TOPLEFT, LOW);
+  digitalWrite(TOPMIDDLE1, HIGH);
+  digitalWrite(CENTERLEFT, HIGH);
+  delay(500);
+  digitalWrite(TOPMIDDLE1, LOW);
+  digitalWrite(CENTERLEFT, LOW);
+  digitalWrite(TOPMIDDLE2, HIGH);
+  digitalWrite(CENTERMIDDLE1, HIGH);
+  digitalWrite(BOTTOMLEFT, HIGH);
+  delay(500);
+  digitalWrite(TOPMIDDLE2, LOW);
+  digitalWrite(CENTERMIDDLE1, LOW);
+  digitalWrite(BOTTOMLEFT, LOW);
+  digitalWrite(TOPRIGHT, HIGH);
+  digitalWrite(CENTERMIDDLE2, HIGH);
+  digitalWrite(BOTTOMMIDDLE1, HIGH);
+  delay(500);
+  digitalWrite(TOPRIGHT, LOW);
+  digitalWrite(CENTERMIDDLE2, LOW);
+  digitalWrite(BOTTOMMIDDLE1, LOW);
+  digitalWrite(CENTERRIGHT, HIGH);
+  digitalWrite(BOTTOMMIDDLE2, HIGH);
+  delay(500);
+  digitalWrite(CENTERRIGHT, LOW);
+  digitalWrite(BOTTOMMIDDLE2, LOW);
+  digitalWrite(BOTTOMRIGHT, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMRIGHT, LOW);
+}
+
+void sweepBottomLeft(){
+  digitalWrite(TOPRIGHT, HIGH);
+  delay(500);
+  digitalWrite(TOPRIGHT, LOW);
+  digitalWrite(TOPMIDDLE2, HIGH);
+  digitalWrite(CENTERRIGHT, HIGH);
+  delay(500);
+  digitalWrite(TOPMIDDLE2, LOW);
+  digitalWrite(CENTERRIGHT, LOW);
+  digitalWrite(TOPMIDDLE1, HIGH);
+  digitalWrite(CENTERMIDDLE2, HIGH);
+  digitalWrite(BOTTOMRIGHT, HIGH);
+  delay(500);
+  digitalWrite(TOPMIDDLE1, LOW);
+  digitalWrite(CENTERMIDDLE2, LOW);
+  digitalWrite(BOTTOMRIGHT, LOW);
+  digitalWrite(TOPLEFT, HIGH);
+  digitalWrite(CENTERMIDDLE1, HIGH);
+  digitalWrite(BOTTOMMIDDLE2, HIGH);
+  delay(500);
+  digitalWrite(TOPLEFT, LOW);
+  digitalWrite(CENTERMIDDLE1, LOW);
+  digitalWrite(BOTTOMMIDDLE2, LOW);
+  digitalWrite(CENTERLEFT, HIGH);
+  digitalWrite(BOTTOMMIDDLE1, HIGH);
+  delay(500);
+  digitalWrite(CENTERLEFT, LOW);
+  digitalWrite(BOTTOMMIDDLE1, LOW);
+  digitalWrite(BOTTOMLEFT, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMLEFT, LOW);
+}
+
+void sweepTopRight(){
+  digitalWrite(BOTTOMLEFT, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMLEFT, LOW);
+  digitalWrite(BOTTOMMIDDLE1, HIGH);
+  digitalWrite(CENTERLEFT, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMMIDDLE1, LOW);
+  digitalWrite(CENTERLEFT, LOW);
+  digitalWrite(BOTTOMMIDDLE2, HIGH);
+  digitalWrite(CENTERMIDDLE1, HIGH);
+  digitalWrite(TOPLEFT, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMMIDDLE2, LOW);
+  digitalWrite(CENTERMIDDLE1, LOW);
+  digitalWrite(TOPLEFT, LOW);
+  digitalWrite(BOTTOMRIGHT, HIGH);
+  digitalWrite(CENTERMIDDLE2, HIGH);
+  digitalWrite(TOPMIDDLE1, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMRIGHT, LOW);
+  digitalWrite(CENTERMIDDLE2, LOW);
+  digitalWrite(TOPMIDDLE1, LOW);
+  digitalWrite(CENTERRIGHT, HIGH);
+  digitalWrite(TOPMIDDLE2, HIGH);
+  delay(500);
+  digitalWrite(CENTERRIGHT, LOW);
+  digitalWrite(TOPMIDDLE2, LOW);
+  digitalWrite(TOPRIGHT, HIGH);
+  delay(500);
+  digitalWrite(TOPRIGHT, LOW);
+}
+
+void sweepTopRight(){
+  digitalWrite(BOTTOMRIGHT, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMRIGHT, LOW);
+  digitalWrite(BOTTOMMIDDLE2, HIGH);
+  digitalWrite(CENTERRIGHT, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMMIDDLE2, LOW);
+  digitalWrite(CENTERRIGHT, LOW);
+  digitalWrite(BOTTOMMIDDLE1, HIGH);
+  digitalWrite(CENTERMIDDLE2, HIGH);
+  digitalWrite(TOPRIGHT, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMMIDDLE1, LOW);
+  digitalWrite(CENTERMIDDLE2, LOW);
+  digitalWrite(TOPRIGHT, LOW);
+  digitalWrite(BOTTOMLEFT, HIGH);
+  digitalWrite(CENTERMIDDLE1, HIGH);
+  digitalWrite(TOPMIDDLE2, HIGH);
+  delay(500);
+  digitalWrite(BOTTOMLEFT, LOW);
+  digitalWrite(CENTERMIDDLE1, LOW);
+  digitalWrite(TOPMIDDLE2, LOW);
+  digitalWrite(CENTERLEFT, HIGH);
+  digitalWrite(TOPMIDDLE1, HIGH);
+  delay(500);
+  digitalWrite(CENTERLEFT, LOW);
+  digitalWrite(TOPMIDDLE1, LOW);
+  digitalWrite(TOPLEFT, HIGH);
+  delay(500);
+  digitalWrite(TOPLEFT, LOW);
+}
+
 void tripleFlash(){
   for(int x=0; x<3; x++){
     digitalWrite(TOPLEFT, HIGH);
