@@ -7,18 +7,18 @@
   02/05/2017
  */
 
-#define TOPLEFT 49
-#define TOPMIDDLE1 48
-#define TOPMIDDLE2 47
-#define TOPRIGHT 46
-#define CENTERLEFT 45
-#define CENTERMIDDLE1 44
-#define CENTERMIDDLE2 43
-#define CENTERRIGHT 42
-#define BOTTOMLEFT 41
-#define BOTTOMMIDDLE1 40
-#define BOTTOMMIDDLE2 39
-#define BOTTOMRIGHT 38
+#define TOPLEFT 27
+#define TOPMIDDLE1 33
+#define TOPMIDDLE2 39
+#define TOPRIGHT 45
+#define CENTERLEFT 29
+#define CENTERMIDDLE1 35
+#define CENTERMIDDLE2 37
+#define CENTERRIGHT 43
+#define BOTTOMLEFT 49
+#define BOTTOMMIDDLE1 31
+#define BOTTOMMIDDLE2 41
+#define BOTTOMRIGHT 47
 
 
 void setup() {
@@ -39,18 +39,53 @@ void setup() {
 
 // loops over the different vibration patterns
 void loop() {
-  sweepRight();
+  digitalWrite(27, HIGH);
+  delay(2000);
+  digitalWrite(27, LOW);
+  digitalWrite(29, HIGH);
+  delay(2000);
+  digitalWrite(29, LOW);
+  digitalWrite(31, HIGH);
+  delay(2000);
+  digitalWrite(31, LOW);
+  digitalWrite(33, HIGH);
+  delay(2000);
+  digitalWrite(33, LOW);
+  digitalWrite(35, HIGH);
+  delay(2000);
+  digitalWrite(35, LOW);
+  digitalWrite(37, HIGH);
+  delay(2000);
+  digitalWrite(37, LOW);
+  digitalWrite(39, HIGH);
+  delay(2000);
+  digitalWrite(39, LOW);
+  digitalWrite(41, HIGH);
+  delay(2000);
+  digitalWrite(41, LOW);
+  digitalWrite(43, HIGH);
+  delay(2000);
+  digitalWrite(43, LOW);
+  digitalWrite(45, HIGH);
+  delay(2000);
+  digitalWrite(45, LOW);
+  digitalWrite(47, HIGH);
+  delay(2000);
+  digitalWrite(47, LOW);
+  digitalWrite(49, HIGH);
+  delay(2000);
+  digitalWrite(49, LOW);
+  
+  /*sweepRight();
   delay(2000);
   sweepLeft();
   delay(2000);
   sweepDown();
   delay(2000);
-  sweepUp();
+  sweepUp();*/
   delay(2000);
   randomFlash();
-  delay(2000);
-  tripleFlash();
-  delay(2000);
+  delay(1000);
 }
 
 void sweepRight(){
@@ -274,7 +309,7 @@ void sweepTopRight(){
   digitalWrite(TOPRIGHT, LOW);
 }
 
-void sweepTopRight(){
+void sweepTopLeft(){
   digitalWrite(BOTTOMRIGHT, HIGH);
   delay(500);
   digitalWrite(BOTTOMRIGHT, LOW);
