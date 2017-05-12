@@ -17,12 +17,14 @@ Embed static maps, locations andcustomisation. Could be used as a quick fix/ for
 https://developers.google.com/maps/documentation/static-maps
 
 
-Goolgle Directions API
+Google Directions API
 ----------------------
 
 Get directions as a series of waypoints - different modes of transport available. This will be the primary way of getting directions. This is a web service. Up to 2500 requests per day for free.
 
 https://developers.google.com/maps/documentation/directions
+
+Using the Google Directions API through the Java Client for Google Maps Services, see https://github.com/googlemaps/google-maps-services-java
 
 
 
