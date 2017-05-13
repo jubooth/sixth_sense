@@ -12,70 +12,70 @@ Notes
 
 getDirections(...) and newRequest()... return DirectionResult.
 
-DirectionResult
-	geocodedWaypoints[]
-		geocoderStatus (OK | ZERO_RESULTS)
-		partialMatch (boolean)
-		placeId (String)
-		types[] (AIRPORT | BUS_STATION | CHURCH | etc.)
-	routes[]
-		bounds (northeast and southwest points to form map bounds)
-		copyrights (String)
-		fare (currency and amount)
-		legs[]
-			arrivalTime (DateTime)
-			departureTime (DateTime)
-			distance
-				humanReadable (String)
-				inMeters (long)
-			duration
-				humanReadable (String)
-				inSeconds (long)
-			durationInTraffic
-				humanReadable (String)
-				inSeconds (long)
-			endAddress (string)
-			endLocation (LatLng)
-			startAddress (string)
-			startLocation (LatLng)
-			steps[] - holds single instruction eg. turn left onto exhibition rd.
-				distance
-					humanReadable (String)
-					inMeters (long)
-				duration
-					humanReadable (String)
-					inSeconds (long)
-				endLocation
-				htmlInstructions
-				polyline - representation of path (decodePath() returns LatLng list and getEncodedPath() returns string)
-				startLocation (latLng)
-				steps[] (more detailed)
-				transitDetails
-					arrivalStop
-						location (LatLng)
-						name (string)
-					arrivalTime
-					departureStop
-						location (LatLng)
-						name (string)
-					departureTime
-					headsign (String - specifies the direction in which to travel on this line)
-					headway (long - expected number of seconds between departures from the same stop)
-					line
-						agencies[]
-							name
-							phone
-							url
-						color
-						icon
-						name
-						shortName
-						textColor
-						url
-						vehicle
-					numStops
-				travelMode (BICYCLING | DRIVING | TRANSIT | UNKNOWN | WALKING)
-		overviewPolyline (decodePath() returns LatLng list and getEncodedPath() returns string)
-		summary (String)
-		warnings[] (string)
-		waypointOrder[] (int)
+*DirectionResult
+	*geocodedWaypoints[]
+		*geocoderStatus (OK | ZERO_RESULTS)
+		*partialMatch (boolean)
+		*placeId (String)
+		*types[] (AIRPORT | BUS_STATION | CHURCH | etc.)
+	*routes[]
+		*bounds (northeast and southwest points to form map bounds)
+		*copyrights (String)
+		*fare (currency and amount)
+		*legs[]
+			*arrivalTime (DateTime)
+			*departureTime (DateTime)
+			*distance
+				*humanReadable (String)
+				*inMeters (long)
+			*duration
+				*humanReadable (String)
+				*inSeconds (long)
+			*durationInTraffic
+				*humanReadable (String)
+				*inSeconds (long)
+			*endAddress (string)
+			*endLocation (LatLng)
+			*startAddress (string)
+			*startLocation (LatLng)
+			*steps[] - holds single instruction eg. turn left onto exhibition rd.
+				*distance
+					*humanReadable (String)
+					*inMeters (long)
+				*duration
+					*humanReadable (String)
+					*inSeconds (long)
+				*endLocation
+				*htmlInstructions
+				*polyline - representation of path (decodePath() returns LatLng list and getEncodedPath() returns string)
+				*startLocation (latLng)
+				*steps[] (more detailed)
+				*transitDetails
+					*arrivalStop
+						*location (LatLng)
+						*name (string)
+					*arrivalTime
+					*departureStop
+						*location (LatLng)
+						*name (string)
+					*departureTime
+					*headsign (String - specifies the direction in which to travel on this line)
+					*headway (long - expected number of seconds between departures from the same stop)
+					*line
+						*agencies[]
+							*name
+							*phone
+							*url
+						*color
+						*icon
+						*name
+						*shortName
+						*textColor
+						*url
+						*vehicle
+					*numStops
+				*travelMode (BICYCLING | DRIVING | TRANSIT | UNKNOWN | WALKING)
+		*overviewPolyline (decodePath() returns LatLng list and getEncodedPath() returns string)
+		*summary (String)
+		*warnings[] (string)
+		*waypointOrder[] (int)
