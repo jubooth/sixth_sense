@@ -53,19 +53,81 @@ public class MainActivity extends AppCompatActivity {
                         .destination(destination).await();
             }
             output = result.routes[0].summary;
-            output4 = result.routes[0].legs[leg].steps[step].htmlInstructions;
+            String str = result.routes[0].legs[leg].steps[step].htmlInstructions;
+            int boldStart = str.indexOf("<b>");
+            int directionStart = boldStart + 3;
+            int directionEnd = str.indexOf("</b>");
+            String direction = str.substring(directionStart, directionEnd);
+            String degree = str.substring(0, boldStart-1);
+
+            if(degree.equals("Head")){
+                switch (direction){
+                    case "north":
+                        output4 = "forward";
+                        break;
+                    case "north east":
+                        output4 = "forward right";
+                        break;
+                    case "east":
+                        output4 = "right";
+                        break;
+                    case "south east":
+                        output4 = "back right";
+                        break;
+                    case "south":
+                        output4 = "back";
+                        break;
+                    case "south west":
+                        output4 = "back left";
+                        break;
+                    case "west":
+                        output4 = "left";
+                        break;
+                    case "north west":
+                        output4 = "forward left";
+                        break;
+                    default:
+                        output4 = "nothing";
+                        break;
+                }
+            }
+            else if(degree.equals("Slight")){
+                switch (direction){
+                    case "right":
+                        output4 = "forward right";
+                        break;
+                    case "left":
+                        output4 = "forward left";
+                        break;
+                    default:
+                        output4 = "forward";
+                        break;
+                }
+            }
+            else if(degree.equals("Turn")){
+                switch (direction){
+                    case "right":
+                        output4 = "right";
+                        break;
+                    case "left":
+                        output4 = "left";
+                        break;
+                    default:
+                        output4 = "forward";
+                        break;
+                }
+            }
+            else{
+                output4 = "forward";
+            }
+
+            output2 = result.routes[0].legs[leg].steps[step].endLocation.toString();
             step++;
-            output2 = result.routes[0].legs[leg].steps[step].startLocation.toString();
 
             TextView textView2 = (TextView) findViewById(R.id.textView2);
             textView2.setText(output2);
             TextView textView4 = (TextView) findViewById(R.id.textView4);
             textView4.setText(output4);
-        }
-        catch(ArrayIndexOutOfBoundsException e){
-            step = 0;
-            leg++;
-            output = e.toString();
         }
         catch (Exception e){
             output = e.toString();
