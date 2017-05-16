@@ -86,7 +86,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adafruit.bluefruit.le.connect.app.settings.MqttUartSettingsActivity" />
         </activity>
-
+        <activity android:name=".app.GPSNavigationActivity"></activity>
     </application>
 
 </manifest>

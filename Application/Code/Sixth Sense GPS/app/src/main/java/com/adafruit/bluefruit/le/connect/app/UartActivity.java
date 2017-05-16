@@ -234,6 +234,11 @@ public class UartActivity extends UartInterfaceActivity implements MqttManager.M
         uartSendData("1", false);
     }
 
+    public void onStartGPSNavigation(View view) {
+        Intent intent = new Intent(this, GPSNavigationActivity.class);
+        startActivity(intent);
+    }
+
     private void uartSendData(String data, boolean wasReceivedFromMqtt) {
         // MQTT publish to TX
         MqttSettings settings = MqttSettings.getInstance(UartActivity.this);

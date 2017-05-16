@@ -69,6 +69,35 @@
             android:background="#cccccc"
             android:headerDividersEnabled="false" />
 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.28"
+            android:onClick="onStartGPSNavigation"
+            android:text="Start GPS Navigation" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Another Sense"
+            android:layout_weight="0.29" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Another Sense"
+            android:layout_weight="0.33" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Another Sense"
+            android:layout_weight="0.37" />
+
         <EditText
             android:id="@+id/bufferTextView"
             android:layout_width="match_parent"
@@ -77,6 +106,7 @@
             android:background="#cccccc"
             android:cursorVisible="false"
             android:gravity="top"
+            android:paddingTop="8dp"
             android:scrollbarFadeDuration="0"
             android:textColorHighlight="#ffffff" />
 
