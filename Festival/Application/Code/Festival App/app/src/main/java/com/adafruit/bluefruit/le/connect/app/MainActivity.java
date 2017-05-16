@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
         });
 
 
-        mPeripheralList.setFilterName("UART");
+        mPeripheralList.setFilterName("6SENSE");
         mPeripheralList.setFilterOnlyUartEnabled(true);
         updateFilters();
 
