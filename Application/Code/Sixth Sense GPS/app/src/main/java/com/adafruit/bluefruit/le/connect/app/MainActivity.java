@@ -550,7 +550,8 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
 
 
             if (mSelectedDeviceData.type == BluetoothDeviceData.kType_Uart) {      // if is uart, show all the available activities
-                mComponentToStartWhenConnected = UartActivity.class;
+                //mComponentToStartWhenConnected = UartActivity.class;
+                mComponentToStartWhenConnected = GPSNavigationActivity.class;
                 connect(device);
             }
         } else {

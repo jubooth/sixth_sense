@@ -262,6 +262,7 @@ public class UartActivity extends UartInterfaceActivity implements MqttManager.M
             mSentBytes += data.length();
         }
 
+
         // Add to current buffer
         byte[] bytes = new byte[0];
         try {

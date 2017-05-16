@@ -6,12 +6,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.adafruit.bluefruit.le.connect.R;
+import com.adafruit.bluefruit.le.connect.ble.BleManager;
+import com.adafruit.bluefruit.le.connect.mqtt.MqttManager;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 
-public class GPSNavigationActivity extends AppCompatActivity {
+public class GPSNavigationActivity extends UartInterfaceActivity {
 
     public String travelMode = "walking";
     public String origin = "Imperial College London, UK";
@@ -25,11 +27,30 @@ public class GPSNavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gpsnavigation);
 
+        mBleManager = BleManager.getInstance(this);
+
+        onServicesDiscovered();
+
         TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText("Hi Ju!");
 
         TextView textView2 = (TextView) findViewById(R.id.textView2);
         textView2.setText("Welcome");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Setup listeners
+        mBleManager.setBleListener(this);
+
+    }
+
+    @Override
+    public void onServicesDiscovered() {
+        super.onServicesDiscovered();
+        enableRxNotifications();
     }
 
     public void onGo(View view) {
@@ -55,35 +76,45 @@ public class GPSNavigationActivity extends AppCompatActivity {
             int directionEnd = str.indexOf("</b>");
             String direction = str.substring(directionStart, directionEnd);
             String degree = str.substring(0, boldStart-1);
+            char send;
 
             if(degree.equals("Head")){
                 switch (direction){
                     case "north":
                         output4 = "forward";
+                        send = '1';
                         break;
                     case "north east":
                         output4 = "forward right";
+                        send = '2';
                         break;
                     case "east":
                         output4 = "right";
+                        send = '3';
                         break;
                     case "south east":
                         output4 = "back right";
+                        send = '4';
                         break;
                     case "south":
                         output4 = "back";
+                        send = '5';
                         break;
                     case "south west":
                         output4 = "back left";
+                        send = '6';
                         break;
                     case "west":
                         output4 = "left";
+                        send = '7';
                         break;
                     case "north west":
                         output4 = "forward left";
+                        send = '8';
                         break;
                     default:
                         output4 = "nothing";
+                        send = '9';
                         break;
                 }
             }
@@ -91,12 +122,15 @@ public class GPSNavigationActivity extends AppCompatActivity {
                 switch (direction){
                     case "right":
                         output4 = "forward right";
+                        send = '2';
                         break;
                     case "left":
                         output4 = "forward left";
+                        send = '8';
                         break;
                     default:
                         output4 = "forward";
+                        send = '1';
                         break;
                 }
             }
@@ -104,18 +138,26 @@ public class GPSNavigationActivity extends AppCompatActivity {
                 switch (direction){
                     case "right":
                         output4 = "right";
+                        send = '3';
                         break;
                     case "left":
                         output4 = "left";
+                        send = '7';
                         break;
                     default:
                         output4 = "forward";
+                        send = '1';
                         break;
                 }
             }
             else{
                 output4 = "forward";
+                send = '1';
             }
+
+            byte data[] = new byte[1];
+            data[0] = (byte) send;
+            sendData(data);
 
             output2 = result.routes[0].legs[leg].steps[step].endLocation.toString();
             step++;
