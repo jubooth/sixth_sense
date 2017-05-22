@@ -30,7 +30,7 @@
 #define BOTTOMRIGHT 49
 
 Adafruit_BLE_UART uart = Adafruit_BLE_UART(REQ, RDY, RST);    // initialise the uart to be polled
-int period = 400;
+int period = 300;
 int pwm = 150;
 
 // called when an ACI event occurs
@@ -132,21 +132,21 @@ void setup(void) {
 
 void up() {
   Serial.print("up\n");
-  analogWrite(BOTTOMCENTRELEFT, pwm);
-  analogWrite(BOTTOMCENTRERIGHT, pwm);
+  analogWrite(BOTTOMLEFT, pwm);
+  analogWrite(BOTTOMRIGHT, pwm);
   delay(period);
-  analogWrite(BOTTOMCENTRELEFT, 0);
-  analogWrite(BOTTOMCENTRERIGHT, 0);
-  analogWrite(MIDDLECENTRELEFT, pwm);
-  analogWrite(MIDDLECENTRERIGHT, pwm);
+  analogWrite(BOTTOMLEFT, 0);
+  analogWrite(BOTTOMRIGHT, 0);
+  analogWrite(MIDDLELEFT, pwm);
+  analogWrite(MIDDLERIGHT, pwm);
   delay(period);
-  analogWrite(MIDDLECENTRELEFT, 0);
-  analogWrite(MIDDLECENTRERIGHT, 0);
-  analogWrite(TOPCENTRELEFT, pwm);
-  analogWrite(TOPCENTRERIGHT, pwm);
+  analogWrite(MIDDLELEFT, 0);
+  analogWrite(MIDDLERIGHT, 0);
+  analogWrite(TOPLEFT, pwm);
+  analogWrite(TOPRIGHT, pwm);
   delay(period);
-  analogWrite(TOPCENTRELEFT, 0);
-  analogWrite(TOPCENTRERIGHT, 0);
+  analogWrite(TOPLEFT, 0);
+  analogWrite(TOPRIGHT, 0);
 }
 
 void down() {
@@ -280,7 +280,7 @@ void warning() {
   delay(period);
   analogWrite(MIDDLECENTRERIGHT, 0);
   analogWrite(MIDDLECENTRELEFT, 0);
-  delay((2*period));
+  delay((1.5*period));
   analogWrite(TOPRIGHT, pwm);
   analogWrite(TOPLEFT, pwm);
   analogWrite(BOTTOMRIGHT, pwm);
