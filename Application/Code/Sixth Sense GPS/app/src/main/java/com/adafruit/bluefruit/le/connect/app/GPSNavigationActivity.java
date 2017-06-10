@@ -201,12 +201,6 @@ public class GPSNavigationActivity extends UartInterfaceActivity {
                     output4 = "forward";
                     send = '1';
                 }
-                byte data[] = new byte[1];
-                data[0] = (byte) send;
-                sendData(data);
-
-                TextView textView4 = (TextView) findViewById(R.id.textView4);
-                textView4.setText(output4);
 
             step++;
             /*output2 = result.routes[0].legs[leg].steps[step].endLocation.toString();

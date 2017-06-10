@@ -84,6 +84,66 @@ void rxCallback(uint8_t *buffer, uint8_t len) {
       case '0':
         warning();
         break;
+      case 'a':
+        analogWrite(TOPLEFT, pwm);
+        delay(4*period);
+        analogWrite(TOPLEFT, 0);
+        break;
+      case 'b':
+        analogWrite(TOPCENTRELEFT, pwm);
+        delay(4*period);
+        analogWrite(TOPCENTRELEFT, 0);
+        break;
+      case 'c':
+        analogWrite(TOPCENTRERIGHT, pwm);
+        delay(4*period);
+        analogWrite(TOPCENTRERIGHT, 0);
+        break;
+      case 'd':
+        analogWrite(TOPRIGHT, pwm);
+        delay(4*period);
+        analogWrite(TOPRIGHT, 0);
+        break;
+      case 'e':
+        analogWrite(MIDDLELEFT, pwm);
+        delay(4*period);
+        analogWrite(MIDDLELEFT, 0);
+        break;
+      case 'f':
+        analogWrite(MIDDLECENTRELEFT, pwm);
+        delay(4*period);
+        analogWrite(MIDDLECENTRELEFT, 0);
+        break;
+      case 'g':
+        analogWrite(MIDDLECENTRERIGHT, pwm);
+        delay(4*period);
+        analogWrite(MIDDLECENTRERIGHT, 0);
+        break;
+      case 'h':
+        analogWrite(MIDDLERIGHT, pwm);
+        delay(4*period);
+        analogWrite(MIDDLERIGHT, 0);
+        break;
+      case 'i':
+        analogWrite(BOTTOMLEFT, pwm);
+        delay(4*period);
+        analogWrite(BOTTOMLEFT, 0);
+        break;
+      case 'j':
+        analogWrite(BOTTOMCENTRELEFT, pwm);
+        delay(4*period);
+        analogWrite(BOTTOMCENTRELEFT, 0);
+        break;
+      case 'k':
+        analogWrite(BOTTOMCENTRERIGHT, pwm);
+        delay(4*period);
+        analogWrite(BOTTOMCENTRERIGHT, 0);
+        break;
+      case 'l':
+        analogWrite(BOTTOMRIGHT, pwm);
+        delay(4*period);
+        analogWrite(BOTTOMRIGHT, 0);
+        break;
       default:
         break;
     }
