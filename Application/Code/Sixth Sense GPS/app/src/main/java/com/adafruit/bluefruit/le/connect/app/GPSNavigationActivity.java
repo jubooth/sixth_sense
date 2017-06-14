@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -18,21 +19,39 @@ import android.widget.TextView;
 
 import com.adafruit.bluefruit.le.connect.R;
 import com.adafruit.bluefruit.le.connect.ble.BleManager;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.EncodedPolyline;
+import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
+
+import java.util.List;
+
+import static java.lang.Math.sqrt;
 
 public class GPSNavigationActivity extends UartInterfaceActivity {
 
     public String travelMode = "walking";
     public String origin = "Imperial College London, UK";
     public String destination = "The Albert Memorial, London, UK";
+    public LatLng start = new LatLng(51.49801369999999, -0.17646930000000793);
+    public LatLng instrEnd = new LatLng(0,0);
     GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyC7HmJjEPcHOl9G9f6BkYgsXHmmE0E-w7c");
     public int step = 0;
     public int leg = 0;
     DirectionsStep directions[];
+
+    public static final String EXTRA_LAT = "0";
+    public static final String EXTRA_LNG = "0";
+    public static final String EXTRA_LATS = "0";
+    public static final String EXTRA_LNGS = "0";
 
     LocationManager locationManager;
     double longitudeGPS, latitudeGPS;
@@ -47,12 +66,6 @@ public class GPSNavigationActivity extends UartInterfaceActivity {
         onServicesDiscovered();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText("Hi Ju!");
-
-        TextView textView2 = (TextView) findViewById(R.id.textView2);
-        textView2.setText("Welcome");
     }
 
     @Override
@@ -77,21 +90,32 @@ public class GPSNavigationActivity extends UartInterfaceActivity {
         TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText(destination);
         step = 0;
+        LatLng gps = updateGPSLocation();
+        TextView textView2 = (TextView) findViewById(R.id.textView2);
+        if((gps.lat == 0) && (gps.lng == 0)){
+            textView.setText("no GPS location available");
+            textView2.setText("no GPS location available");
+        }
+        else{
+            textView2.setText(gps.toString());
+            start = gps;
+        }
         try {
             DirectionsResult result;
             if (travelMode == "cycling") {
                 result = DirectionsApi.newRequest(context)
                         .mode(TravelMode.BICYCLING)
-                        .origin(origin)
+                        .origin(start)
                         .destination(destination).await();
             } else {
                 result = DirectionsApi.newRequest(context)
                         .mode(TravelMode.WALKING)
-                        .origin(origin)
+                        .origin(start)
                         .destination(destination).await();
             }
 
             directions = result.routes[0].legs[0].steps.clone();
+            instrEnd = directions[0].endLocation;
 
         } catch(Exception e){
 
@@ -99,130 +123,143 @@ public class GPSNavigationActivity extends UartInterfaceActivity {
     }
 
     public void onGo(View view) {
-        String output, output2, output4;
+        String output = "forwards";
+        String output2, output4;
+        LatLng gps;
         char send;
-        try {
-            /*DirectionsResult result;
-            if (travelMode == "cycling") {
-                result = DirectionsApi.newRequest(context)
-                        .mode(TravelMode.BICYCLING)
-                        .origin(origin)
-                        .destination(destination).await();
-            } else {
-                result = DirectionsApi.newRequest(context)
-                        .mode(TravelMode.WALKING)
-                        .origin(origin)
-                        .destination(destination).await();
-            }
-
-            output = result.routes[0].summary;
-            String str = result.routes[0].legs[leg].steps[step].htmlInstructions;*/
-
-                String str = directions[step].htmlInstructions;
-                int boldStart = str.indexOf("<b>");
-                int directionStart = boldStart + 3;
-                int directionEnd = str.indexOf("</b>");
-                String direction = str.substring(directionStart, directionEnd);
-                String degree = str.substring(0, boldStart - 1);
-
-                if (degree.equals("Head")) {
-                    switch (direction) {
-                        case "north":
-                            output4 = "forward";
-                            send = '1';
-                            break;
-                        case "north east":
-                            output4 = "forward right";
-                            send = '2';
-                            break;
-                        case "east":
-                            output4 = "right";
-                            send = '3';
-                            break;
-                        case "south east":
-                            output4 = "back right";
-                            send = '4';
-                            break;
-                        case "south":
-                            output4 = "back";
-                            send = '5';
-                            break;
-                        case "south west":
-                            output4 = "back left";
-                            send = '6';
-                            break;
-                        case "west":
-                            output4 = "left";
-                            send = '7';
-                            break;
-                        case "north west":
-                            output4 = "forward left";
-                            send = '8';
-                            break;
-                        default:
-                            output4 = "nothing";
-                            send = '9';
-                            break;
+        while(output != "destination reached") {
+            gps = updateGPSLocation();
+            TextView textView2 = (TextView) findViewById(R.id.textView2);
+            textView2.setText(gps.toString());
+            double closeLat = instrEnd.lat - gps.lat;
+            double closeLng = instrEnd.lng - gps.lng;
+            double dist = sqrt((closeLat*closeLat)+(closeLng*closeLng));
+            if(dist < 0.0003) {
+                try {
+                    /*DirectionsResult result;
+                    if (travelMode == "cycling") {
+                        result = DirectionsApi.newRequest(context)
+                                .mode(TravelMode.BICYCLING)
+                                .origin(origin)
+                                .destination(destination).await();
+                    } else {
+                        result = DirectionsApi.newRequest(context)
+                                .mode(TravelMode.WALKING)
+                                .origin(origin)
+                                .destination(destination).await();
                     }
-                } else if (degree.equals("Slight")) {
-                    switch (direction) {
-                        case "right":
-                            output4 = "forward right";
-                            send = '2';
-                            break;
-                        case "left":
-                            output4 = "forward left";
-                            send = '8';
-                            break;
-                        default:
-                            output4 = "forward";
-                            send = '1';
-                            break;
+
+                    output = result.routes[0].summary;
+                    String str = result.routes[0].legs[leg].steps[step].htmlInstructions;*/
+
+                    String str = directions[step].htmlInstructions;
+                    int boldStart = str.indexOf("<b>");
+                    int directionStart = boldStart + 3;
+                    int directionEnd = str.indexOf("</b>");
+                    String direction = str.substring(directionStart, directionEnd);
+                    String degree = str.substring(0, boldStart - 1);
+
+                    if (degree.equals("Head")) {
+                        switch (direction) {
+                            case "north":
+                                output4 = "forward";
+                                send = '1';
+                                break;
+                            case "north east":
+                                output4 = "forward right";
+                                send = '2';
+                                break;
+                            case "east":
+                                output4 = "right";
+                                send = '3';
+                                break;
+                            case "south east":
+                                output4 = "back right";
+                                send = '4';
+                                break;
+                            case "south":
+                                output4 = "back";
+                                send = '5';
+                                break;
+                            case "south west":
+                                output4 = "back left";
+                                send = '6';
+                                break;
+                            case "west":
+                                output4 = "left";
+                                send = '7';
+                                break;
+                            case "north west":
+                                output4 = "forward left";
+                                send = '8';
+                                break;
+                            default:
+                                output4 = "nothing";
+                                send = '9';
+                                break;
+                        }
+                    } else if (degree.equals("Slight")) {
+                        switch (direction) {
+                            case "right":
+                                output4 = "forward right";
+                                send = '2';
+                                break;
+                            case "left":
+                                output4 = "forward left";
+                                send = '8';
+                                break;
+                            default:
+                                output4 = "forward";
+                                send = '1';
+                                break;
+                        }
+                    } else if (degree.equals("Turn")) {
+                        switch (direction) {
+                            case "right":
+                                output4 = "right";
+                                send = '3';
+                                break;
+                            case "left":
+                                output4 = "left";
+                                send = '7';
+                                break;
+                            default:
+                                output4 = "forward";
+                                send = '1';
+                                break;
+                        }
+                    } else if (degree.equals("Continue")) {
+                        output4 = "forward";
+                        send = '1';
+                    } else {
+                        output4 = "forward";
+                        send = '1';
                     }
-                } else if (degree.equals("Turn")) {
-                    switch (direction) {
-                        case "right":
-                            output4 = "right";
-                            send = '3';
-                            break;
-                        case "left":
-                            output4 = "left";
-                            send = '7';
-                            break;
-                        default:
-                            output4 = "forward";
-                            send = '1';
-                            break;
-                    }
-                } else if (degree.equals("Continue")) {
-                    output4 = "forward";
-                    send = '1';
-                } else {
-                    output4 = "forward";
-                    send = '1';
+
+                    step++;
+                    instrEnd = directions[step].endLocation;
+                    /*output2 = result.routes[0].legs[leg].steps[step].endLocation.toString();
+                    step++;
+
+                    TextView textView2 = (TextView) findViewById(R.id.textView2);
+                    textView2.setText(output2);*/
+
+                } catch (Exception e) {
+                    output = "destination reached";
+                    output4 = "warning";
+                    send = '0';
                 }
 
-            step++;
-            /*output2 = result.routes[0].legs[leg].steps[step].endLocation.toString();
-            step++;
+                byte data[] = new byte[1];
+                data[0] = (byte) send;
+                sendData(data);
 
-            TextView textView2 = (TextView) findViewById(R.id.textView2);
-            textView2.setText(output2);*/
-
-        } catch (Exception e) {
-            output = "destination reached";
-            output4 = "warning";
-            send = '0';
+                /*TextView textView = (TextView) findViewById(R.id.textView);
+                textView.setText(output);*/
+                TextView textView7 = (TextView) findViewById(R.id.textView7);
+                textView7.setText(output4);
+            }
         }
-
-        byte data[] = new byte[1];
-        data[0] = (byte) send;
-        sendData(data);
-
-        /*TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(output);*/
-        TextView textView4 = (TextView) findViewById(R.id.textView4);
-        textView4.setText(output4);
     }
 
     public void onWalking(View view) {
@@ -262,9 +299,10 @@ public class GPSNavigationActivity extends UartInterfaceActivity {
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    public void onUpdateGPSLocation(View view) {
+    public LatLng updateGPSLocation() {
+        LatLng loc = new LatLng(0,0);
         if (!checkLocation())
-            return;
+            return loc;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -274,7 +312,7 @@ public class GPSNavigationActivity extends UartInterfaceActivity {
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             System.out.println("no permission");
-            return;
+            return loc;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2 * 60 * 1000, 10, locationListenerGPS);
         System.out.println("requested");
@@ -282,12 +320,47 @@ public class GPSNavigationActivity extends UartInterfaceActivity {
         if(location != null) {
             longitudeGPS = location.getLongitude();
             latitudeGPS = location.getLatitude();
+            loc.lng = longitudeGPS;
+            loc.lat = latitudeGPS;
+
+            String output2 = longitudeGPS + ", " + latitudeGPS;
+           /* TextView textView2 = (TextView) findViewById(R.id.textView2);
+            textView2.setText(output2);
             System.out.println(longitudeGPS);
-            System.out.println(latitudeGPS);
+            System.out.println(latitudeGPS);*/
+            return loc;
         }
         else{
-            System.out.println("location is null");
+            /*TextView textView2 = (TextView) findViewById(R.id.textView2);
+            textView2.setText("location is null");
+            System.out.println("location is null");*/
+            return loc;
         }
+    }
+
+    public void onCheckRoute(View view){
+        Intent intent = new Intent(this, MapActivity.class);
+        try {
+            EncodedPolyline route = directions[0].polyline;
+            LatLng point;
+            int size = route.decodePath().size();
+            double lats[] = new double[size];
+            double lngs[] = new double[size];
+            for (int i = 0; i < size; i++) {
+                point = route.decodePath().get(i);
+                lats[i] = point.lat;
+                lngs[i] = point.lng;
+            }
+            intent.putExtra(EXTRA_LAT, start.lat);
+            intent.putExtra(EXTRA_LNG, start.lng);
+            //intent.putExtra(EXTRA_LATS, lats);
+            //intent.putExtra(EXTRA_LNGS, lngs);
+        }
+        catch(Exception e){
+            intent.putExtra(EXTRA_LAT, start.lat);
+            intent.putExtra(EXTRA_LNG, start.lng);
+        }
+        startActivity(intent);
     }
 
     private final LocationListener locationListenerGPS = new LocationListener() {

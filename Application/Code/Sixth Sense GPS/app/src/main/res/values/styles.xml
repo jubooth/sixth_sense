@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+         Customize your theme here.
 
     </style>
 
@@ -19,5 +19,9 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="WindowTitleBackground">
+        <item name="android:background">@android:color/holo_orange_dark</item>
+    </style>
 
 </resources>

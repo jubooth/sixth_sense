@@ -1409,48 +1409,49 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
             return kSignalDrawables[index];
         }
 
-        @Override
+       @Override
         public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.layout_scan_item_child, parent, false);
-            }
+           if (convertView == null) {
+               convertView = getLayoutInflater().inflate(R.layout.layout_scan_item_child, parent, false);
+           }
 
-            // We don't expect many items so for clarity just find the views each time instead of using a ViewHolder
-            TextView textView = (TextView) convertView.findViewById(R.id.dataTextView);
-            Spanned text = getChild(groupPosition, childPosition);
-            textView.setText(text);
+           // We don't expect many items so for clarity just find the views each time instead of using a ViewHolder
+           TextView textView = (TextView) convertView.findViewById(R.id.dataTextView);
+           Spanned text = getChild(groupPosition, childPosition);
+           textView.setText(text);
 
-            Button rawDataButton = (Button) convertView.findViewById(R.id.rawDataButton);
-            rawDataButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ArrayList<BluetoothDeviceData> filteredPeripherals = mPeripheralList.filteredPeripherals(false);
-                    if (groupPosition < filteredPeripherals.size()) {
-                        final BluetoothDeviceData deviceData = filteredPeripherals.get(groupPosition);
-                        final byte[] scanRecord = deviceData.scanRecord;
-                        final String packetText = BleUtils.bytesToHexWithSpaces(scanRecord);
-                        final String clipboardLabel = getString(R.string.scan_device_advertising_title);
+           Button rawDataButton = (Button) convertView.findViewById(R.id.rawDataButton);
+           rawDataButton.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   ArrayList<BluetoothDeviceData> filteredPeripherals = mPeripheralList.filteredPeripherals(false);
+                   if (groupPosition < filteredPeripherals.size()) {
+                       final BluetoothDeviceData deviceData = filteredPeripherals.get(groupPosition);
+                       final byte[] scanRecord = deviceData.scanRecord;
+                       final String packetText = BleUtils.bytesToHexWithSpaces(scanRecord);
+                       final String clipboardLabel = getString(R.string.scan_device_advertising_title);
 
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle(R.string.scan_device_advertising_title)
-                                .setMessage(packetText)
-                                .setPositiveButton(android.R.string.ok, null)
-                                .setNeutralButton(android.R.string.copy, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                                        ClipData clip = ClipData.newPlainText(clipboardLabel, packetText);
-                                        clipboard.setPrimaryClip(clip);
-                                    }
-                                })
-                                .show();
-                    }
+                       new AlertDialog.Builder(MainActivity.this)
+                               .setTitle(R.string.scan_device_advertising_title)
+                               .setMessage(packetText)
+                               .setPositiveButton(android.R.string.ok, null)
+                               .setNeutralButton(android.R.string.copy, new DialogInterface.OnClickListener() {
+                                   @Override
+                                   public void onClick(DialogInterface dialog, int which) {
+                                       ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                       ClipData clip = ClipData.newPlainText(clipboardLabel, packetText);
+                                       clipboard.setPrimaryClip(clip);
+                                   }
+                               })
+                               .show();
+                   }
 
-                }
-            });
+               }
+           });
 
-            return convertView;
-        }
+           return convertView;
+
+       }
 
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
