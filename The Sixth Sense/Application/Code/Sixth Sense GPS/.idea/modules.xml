@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Connection.iml" filepath="$PROJECT_DIR$/Connection.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Festival App.iml" filepath="$PROJECT_DIR$/Festival App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sixth Sense GPS.iml" filepath="$PROJECT_DIR$/Sixth Sense GPS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>
